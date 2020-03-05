@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
+from flask_socketio import SocketIO
 
 sql=SQLAlchemy()
+socketio = SocketIO()
 
 
 def create_app(object_name):
@@ -15,4 +17,5 @@ def create_app(object_name):
 
     stats_create_module(app)
 
+    socketio.init_app(app)
     return app

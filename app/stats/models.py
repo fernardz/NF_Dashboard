@@ -34,9 +34,20 @@ class Fitbit_Weight(db.Model):
     record_date=db.Column(db.DateTime())
     record_time=db.Column(db.Time())
     last_time = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=db.func.current_timestamp())
-
+    @property
+    def as_json(self):
+       #Return object data in easily serializable format
+       return {
+    'index':self.id,
+    'weight':self.weight,
+    'fat':self.fat,
+    'bmi':self.bmi,
+    'date':self.record_date}
+    
     def __repr__(self):
         return "<FITBIT WEIGHT '%s', weight='%s', bmi='%s', date='%s'>"%(self.id, self.weight, self.bmi, self.record_date)
+
+
 
 class Fitbit_Calories(db.Model):
     __tablename__='fitbit_calories'
