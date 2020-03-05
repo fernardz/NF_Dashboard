@@ -1,0 +1,6 @@
+creds_fitbit.txt
+creds.txt
+docker_run_cmd.txt
+data.json
+data_update.py
+__pycache__
