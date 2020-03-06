@@ -22,6 +22,18 @@ class Strava_Activity(db.Model):
     start_date_local=db.Column(db.DateTime())
     last_time = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=db.func.current_timestamp())
 
+    @property
+    def as_json(self):
+       #Return object data in easily serializable format
+       return {
+    'index':self.id,
+    'speed':self.average_speed,
+    'cadence':self.average_cadence,
+    'heartrate':self.average_heartrate,
+    'distance':self.distance,
+    'moving_time':self.moving_time,
+    'date':self.start_date_local.strftime('%Y-%m-%d')}
+
     def __repr__(self):
         return "<STRAVA ACTIVITY '%s', distance='%s', type='%s', date='%s'>"%(self.id, self.distance, self.activity_type, self.start_date_local)
 
@@ -42,8 +54,8 @@ class Fitbit_Weight(db.Model):
     'weight':self.weight,
     'fat':self.fat,
     'bmi':self.bmi,
-    'date':self.record_date}
-    
+    'date':self.record_date.strftime('%Y-%m-%d')}
+
     def __repr__(self):
         return "<FITBIT WEIGHT '%s', weight='%s', bmi='%s', date='%s'>"%(self.id, self.weight, self.bmi, self.record_date)
 
@@ -55,6 +67,14 @@ class Fitbit_Calories(db.Model):
     calories=db.Column(db.Float())
     record_date=db.Column(db.DateTime())
     last_time = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=db.func.current_timestamp())
+
+    @property
+    def as_json(self):
+       #Return object data in easily serializable format
+       return {
+    'index':self.id,
+    'calories':self.calories,
+    'date':self.record_date.strftime('%Y-%m-%d')}
 
     def __repr__(self):
         return "<FITBIT Calories '%s', calories='%s', date='%s'>"%(self.id, self.calories, self.record_date)

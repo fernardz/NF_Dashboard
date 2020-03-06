@@ -22,6 +22,4 @@ def index():
 
 @stats_blueprint.route('/livefeed')
 def lf():
-    """Chat room. The user's name and room must be stored in
-    the session."""
     return render_template('lf.html')
