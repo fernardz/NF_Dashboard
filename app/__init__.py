@@ -5,9 +5,7 @@ from flask_socketio import SocketIO
 from threading import Lock
 
 sql=SQLAlchemy()
-socketio = SocketIO(async_mode = None)
-
-
+socketio = SocketIO(async_mode = 'eventlet')
 thread = None
 thread_lock = Lock()
 

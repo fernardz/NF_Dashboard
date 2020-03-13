@@ -5,18 +5,36 @@ from datetime import datetime, timedelta
 from .. import socketio, thread, thread_lock
 from .models import Strava_Activity, Fitbit_Weight, Fitbit_Calories
 
-@socketio.on('joined', namespace='/livefeed')
-def joined(message):
-    """Sent by clients when they enter a room.
-    A status message is broadcast to all people in the room."""
-    emit('status has entered the room.')
 
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        socketio.sleep(1)
+        count += 1
+        socketio.emit('my_response',
+                      {'data': 'Server generated event', 'count': count},
+                      namespace='/livefeed')
 
 @socketio.on('get_stats', namespace='/livefeed')
 def stats(message):
-    weight=Fitbit_Weight.query.order_by(Fitbit_Weight.record_date.desc()).limit(3).all()
-    activities=Strava_Activity.query.order_by(Strava_Activity.start_date_local.desc()).limit(3).all()
-    calories=Fitbit_Calories.query.order_by(Fitbit_Calories.record_date.desc()).limit(3).all()
+    #weight=Fitbit_Weight.query.order_by(Fitbit_Weight.record_date.desc()).limit(10).all()
+    today=datetime.today()
+    last_week=datetime.today()-timedelta(days=7)
+    last_week_str=last_week.strftime('%Y-%m-%d')
+    weight=Fitbit_Weight.query\
+    .filter(Fitbit_Weight.record_date>=last_week_str)\
+    .order_by(Fitbit_Weight.record_date,Fitbit_Weight.record_time.desc())\
+    .distinct(Fitbit_Weight.record_date).all()
+
+    #activities=Strava_Activity.query.order_by(Strava_Activity.start_date_local.desc()).limit(10).all()
+    activities=Strava_Activity.query\
+    .filter(Strava_Activity.start_date_local>=last_week_str).all()
+
+    calories=Fitbit_Calories.query.filter(Fitbit_Calories.record_date>=last_week_str).order_by(Fitbit_Calories.record_date.desc()).all()
+
+
     data_w=[d.as_json for d in weight]
     data_c=[d.as_json for d in calories]
     data_a=[d.as_json for d in activities]
@@ -30,9 +48,13 @@ def stats(message):
     today=datetime.today()
     start=today-timedelta(days=today.weekday()+1)
     dates=[(start+timedelta(days=x)).strftime('%Y-%m-%d') for x in range(0,7)]
-    emit('dates',{'data':dates},namespace='/livefeed')
+    emit('dates',{'data':dates, 'today':today.strftime('%Y-%m-%d')},namespace='/livefeed')
 
-
-@socketio.on('left', namespace='/livefeed')
-def left(message):
-    print('Client disconnected')
+'''
+@socketio.on('connect', namespace='/livefeed')
+def test_connect():
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(background_thread)
+    emit('my_response', {'data': 'Connected2', 'count': 0})'''

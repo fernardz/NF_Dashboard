@@ -129,7 +129,7 @@ def Update_Fitbit_Calories():
     session.flush()
 
 
-schedule = IntervalSchedule(interval=timedelta(minutes=30))
+schedule = IntervalSchedule(interval=timedelta(minutes=1))
 
 with Flow("Data Updater", schedule) as flow:
     Update_Strava_Activities()

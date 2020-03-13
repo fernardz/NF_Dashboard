@@ -4,3 +4,5 @@ docker_run_cmd.txt
 data.json
 data_update.py
 __pycache__
+test_queries.py
+env_var.txt

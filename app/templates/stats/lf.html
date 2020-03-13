@@ -3,6 +3,13 @@
 {{super()}}
 <script type="text/javascript" charset="utf-8">
     var socket;
+
+    var my_app={
+      dates:[],
+      today:[]
+    }
+
+
     $(document).ready(function(){
         socket = io.connect('http://' + document.domain + ':' + location.port + '/livefeed');
         socket.on('connect', function() {
@@ -11,17 +18,55 @@
 
         socket.on('stats_vals', function(data) {
             console.log(data.data);
-            var wobj=JSON.parse(data.data);
-            var weights=data.data.weight
-            $.each(wobj,function(i,weight) {console.log(weight)});
+            var weights=data.data.weight;
+            var calories=data.data.calories;
+            var activities=data.data.activities;
 
-            $('#chat').val($('#chat').val() + data.msg + '\n');
-            $('#chat').scrollTop($('#chat').scrollHeight);
+            var ww=$('#ww').find('td');
+            var wc=$('#wc').find('td');
+            var wa=$('#wa').find('td');
+
+            $.each(weights,function(i,weight) {console.log(weight)});
+            $.each(calories,function(i,calorie) {console.log(calorie)});
+            $.each(activities,function(i,activity) {console.log(activity)});
+
+            $.each(my_app.dates, function(i, date){
+              console.log(i, date);
+              if (date<=my_app.today){
+              ww[i].innerText='X';
+              wc[i].innerText='X';
+              wa[i].innerText='X';}
+
+              $.each(weights, function(j, weight){
+                if (weight.date==date) {
+                  console.log(weight,i);
+                  ww[i].innerText=weight.weight;
+                }
+              });
+
+              $.each(calories, function(j, calorie){
+                if (calorie.date==date) {
+                  console.log(calorie,i);
+                  wc[i].innerText=calorie.calories;
+                }
+              });
+
+              $.each(activities, function(j, activity){
+                if (activity.date==date) {
+                  console.log(activity,i);
+                  wa[i].innerText=activity.distance;
+                }
+              });
+
+            });
         });
 
         socket.on('dates', function(data){
         console.log(data.data);
         var theads=$('#STATS').find('thead tr').children();
+        my_app.dates=data.data;
+        my_app.today=data.today;
+        console.log(data.today)
         $.each(data.data,function(i, cdate){
         theads[i].innerText=cdate;
         console.log(theads[i]);
@@ -35,11 +80,14 @@
 
     function get_data() {
         console.log('button pressed');
+        console.log(my_app.dates);
+        console.log('pressed');
         socket.emit('get_stats', {});
         };
 
     function get_week() {
         console.log('button pressed');
+
         socket.emit('get_week', {});
         };
 </script>
@@ -52,40 +100,40 @@
         <a href="#" onclick="get_data();">Get Data</a>
         <table id="STATS" class="table">
           <thead>
-            <th class='text-center'>1</th>
-            <th class='text-center'>2</th>
-            <th class='text-center'>3</th>
-            <th class='text-center'>4</th>
-            <th class='text-center'>5</th>
-            <th class='text-center'>6</th>
-            <th class='text-center'>7</th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
           </thead>
-        <tr id='wr'>
-          <td class='text-center'>1</td>
-          <td class='text-center'>2</td>
-          <td class='text-center'>3</td>
-          <td class='text-center'>4</td>
-          <td class='text-center'>5</td>
-          <td class='text-center'>6</td>
-          <td class='text-center'>7</td>
+        <tr id='ww'>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
         </tr>
         <tr id='wc'>
-          <td class='text-center'>1</td>
-          <td class='text-center'>2</td>
-          <td class='text-center'>3</td>
-          <td class='text-center'>4</td>
-          <td class='text-center'>5</td>
-          <td class='text-center'>6</td>
-          <td class='text-center'>7</td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
         </tr>
         <tr id='wa'>
-          <td class='text-center'>1</td>
-          <td class='text-center'>2</td>
-          <td class='text-center'>3</td>
-          <td class='text-center'>4</td>
-          <td class='text-center'>5</td>
-          <td class='text-center'>6</td>
-          <td class='text-center'>7</td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
         </tr>
       </table>
     </body>
