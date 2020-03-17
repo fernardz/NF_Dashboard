@@ -18,8 +18,8 @@ def create_app(object_name):
     from .stats import create_module as stats_create_module
 
 
-
-    socketio.init_app(app)
     stats_create_module(app)
+    socketio.init_app(app)
+
 
     return app

@@ -15,7 +15,7 @@
         socket.on('connect', function() {
             socket.emit('joined', {});
         });
-
+        get_week();
         socket.on('stats_vals', function(data) {
             console.log(data.data);
             var weights=data.data.weight;
@@ -94,11 +94,10 @@
 {% endblock %}
 
 {% block content %}
-    <body>
-        <h1>Flask-SocketIO</h1>
+    <body class='bg-dark'>
         <a href="#" onclick="get_week();">Get Dates</a>
         <a href="#" onclick="get_data();">Get Data</a>
-        <table id="STATS" class="table">
+        <table id="STATS" class="table table-dark">
           <thead>
             <th class='text-center'></th>
             <th class='text-center'></th>
