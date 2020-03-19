@@ -95,8 +95,6 @@
 
 {% block content %}
     <body class='bg-dark'>
-        <a href="#" onclick="get_week();">Get Dates</a>
-        <a href="#" onclick="get_data();">Get Data</a>
         <table id="STATS" class="table table-dark">
           <thead>
             <th class='text-center'></th>
@@ -135,5 +133,8 @@
           <td class='text-center'></td>
         </tr>
       </table>
+      <button onclick="get_week();" type="button" class="btn btn-primary">REFRESH DATES</button>
+      <button onclick="get_data();" type="button" class="btn btn-primary">REFRESH DATA </button>
+
     </body>
 {% endblock content %}
