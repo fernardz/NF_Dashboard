@@ -16,6 +16,7 @@
             socket.emit('joined', {});
         });
         get_week();
+        get_data();
         socket.on('stats_vals', function(data) {
             console.log(data.data);
             var weights=data.data.weight;

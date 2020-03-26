@@ -1,4 +1,4 @@
-from .. import sql as db
+from .. import db
 
 class Strava_Activity(db.Model):
     __tablename__='strava_activity'

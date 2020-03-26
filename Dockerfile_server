@@ -1,0 +1,26 @@
+# pull official base image
+FROM python:3.7-slim-buster
+
+RUN apt-get update && \
+    apt-get install -y dos2unix
+
+# set work directory
+WORKDIR /usr/src/app
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN pip install -r requirements.txt
+RUN pip install gunicorn
+RUN pip install python-dotenv
+
+# copy project
+COPY . /usr/src/app/
+RUN chmod +x docker-entrypoint.sh
+
+RUN dos2unix docker-entrypoint.sh
+EXPOSE 5000
+
+RUN ls
+
+ENTRYPOINT ["./docker-entrypoint.sh"]

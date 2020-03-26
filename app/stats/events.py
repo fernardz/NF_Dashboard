@@ -13,7 +13,7 @@ def background_thread(app):
     #app = create_app('TEST')
     with app.app_context():
         while True:
-            socketio.sleep(360)
+            socketio.sleep(30)
             count += 1
             today=datetime.today()
             last_week=datetime.today()-timedelta(days=7)
@@ -39,7 +39,9 @@ def background_thread(app):
 
             start=today-timedelta(days=today.weekday()+1)
             dates=[(start+timedelta(days=x)).strftime('%Y-%m-%d') for x in range(0,7)]
-            emit('dates',{'data':dates, 'today':today.strftime('%Y-%m-%d')},namespace='/livefeed')
+            socketio.emit('dates',
+                        {'data':dates, 'today':today.strftime('%Y-%m-%d')}
+                        ,namespace='/livefeed')
             #emit('stats_vals',{'data':data},namespace='/livefeed')
             socketio.sleep(3)
             socketio.emit('stats_vals',
