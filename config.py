@@ -5,6 +5,11 @@ class Test_Config:
     SQLALCHEMY_DATABASE_URI = 'postgresql://usr:pass@localhost:5432/sqlalchemy'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+class Test_Updater:
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI',
+                                             'postgresql+psycopg2://test:test@0.0.0.0:5401/test')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 class Config:
     """Set Flask configuration vars."""
 

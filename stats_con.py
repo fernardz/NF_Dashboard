@@ -4,20 +4,21 @@ import datetime
 import keyring
 import base64
 import logging
+import os
 
 log=logging.getLogger()
 class Fitbit():
     def __init__(self):
-        self.storage='creds_fitbit.txt'
+        self.storage='./creds/creds_fitbit.txt'
         try:
             with open(self.storage,'r') as f:
                 datastore=json.load(f)
         except IOError:
-            log.critical("Credentials do not exist, need to creade creds.txt")
+            log.critical("Credentials do not exist, need to create creds.txt")
             exit()
         # Probably should be here, at least use keyring instead
-        self._client_id=keyring.get_password('Fitbit','client_id')
-        self._client_secret=keyring.get_password('Fitbit','client_secret')
+        self._client_id=os.environ.get('FITBIT_CLIENT_ID')
+        self._client_secret=os.environ.get('FITBIT_CLIENT_SECRET')
         self.access_token=datastore['access_token']
         self.expires_in=datastore['expires_in']
         self.refresh_token=datastore['refresh_token']
@@ -149,7 +150,7 @@ if __name__=="__main__":
 
 class Strava():
     def __init__(self):
-        self.storage='creds.txt'
+        self.storage='./creds/creds.txt'
         try:
             with open(self.storage,'r') as f:
                 datastore=json.load(f)
@@ -157,8 +158,8 @@ class Strava():
             log.warning("Credentials do not exist, need to creade creds.txt")
             exit()
         # Probably should be here, at least use keyring instead
-        self._client_id=keyring.get_password('Strava','client_id')#'43801'
-        self._client_secret=keyring.get_password('Strava','client_secret')#51cfd621f26e736c47193e9b4cece0d0d216db37'
+        self._client_id=os.environ.get('STRAVA_CLIENT_ID')
+        self._client_secret=os.environ.get('STRAVA_CLIENT_SECRET')
         self.access_token=datastore['access_token']
         self.expires_at=datastore['expires_at']
         self.expires_in=datastore['expires_in']

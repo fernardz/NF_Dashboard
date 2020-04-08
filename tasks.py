@@ -10,8 +10,18 @@ from datetime import timedelta
 import prefect
 from prefect import Flow, Parameter, task, unmapped
 from prefect.schedules import IntervalSchedule
+import os
 
-app = create_app('config.Test_Config')
+print('DOES THIS WORK',os.environ.get('FITBIT_CLIENT_ID'))
+print('DOES THIS WORK',os.environ.get('FITBIT_CLIENT_SECRET'))
+
+# Creates a new file
+with open('./creds/myfile.txt', 'w') as fp:
+    pass
+    # To write data to new file uncomment
+    # this fp.write("New file created")
+
+app = create_app('config.Config')
 app.app_context().push()
 
 #Initialize logging set level to Debug
@@ -129,7 +139,7 @@ def Update_Fitbit_Calories():
     session.flush()
 
 
-schedule = IntervalSchedule(interval=timedelta(minutes=1))
+schedule = IntervalSchedule(interval=timedelta(minutes=10))
 
 with Flow("Data Updater", schedule) as flow:
     Update_Strava_Activities()
