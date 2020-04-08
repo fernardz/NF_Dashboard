@@ -1,4 +1,4 @@
-from app import create_app, sql
+from app import create_app, db
 from app.stats.models import Strava_Activity, Fitbit_Weight, Fitbit_Calories
 from sqlalchemy import inspect
 import json
@@ -11,7 +11,7 @@ import prefect
 from prefect import Flow, Parameter, task, unmapped
 from prefect.schedules import IntervalSchedule
 
-app = create_app('TEST')
+app = create_app('config.Test_Config')
 app.app_context().push()
 
 #Initialize logging set level to Debug
@@ -22,8 +22,8 @@ console.setFormatter(logging.Formatter(format_str))
 log.addHandler(console)
 log.setLevel(logging.DEBUG)
 
-sql.create_all(app=app)
-session=sql.session
+db.create_all(app=app)
+session=db.session
 
 @task(max_retries=2, retry_delay=timedelta(seconds=2))
 def Update_Strava_Activities():
