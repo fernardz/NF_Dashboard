@@ -9,7 +9,7 @@ services:
       - db
     environment:
       STAGE: test
-      SQLALCHEMY_DATABASE_URI: postgresql://test:test@db/test
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://test:test@db/test
     networks:
       - default
     ports:

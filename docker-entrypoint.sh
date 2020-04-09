@@ -1,18 +1,14 @@
 #!/bin/sh
+set -e
 echo --------------------
 echo Going to Create database
 echo --------------------
 export FLASK_APP=wsgi.py
-if [ ! -d "migrations" ]; then
-    echo --------------------
-    echo INIT THE migrations folder
-    echo --------------------
-    export FLASK_APP=wsgi.py; flask db init
-fi
+#flask db init
 echo --------------------
 echo Generate migration DDL code
 echo --------------------
-flask db migrate
+#flask db migrate
 echo --------------------
 echo Run the DDL code and migrate
 echo --------------------
