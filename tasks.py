@@ -12,14 +12,10 @@ from prefect import Flow, Parameter, task, unmapped
 from prefect.schedules import IntervalSchedule
 import os
 
+#DEBUG
 print('DOES THIS WORK',os.environ.get('FITBIT_CLIENT_ID'))
 print('DOES THIS WORK',os.environ.get('FITBIT_CLIENT_SECRET'))
 
-# Creates a new file
-with open('./creds/myfile.txt', 'w') as fp:
-    pass
-    # To write data to new file uncomment
-    # this fp.write("New file created")
 
 app = create_app('config.Config')
 app.app_context().push()

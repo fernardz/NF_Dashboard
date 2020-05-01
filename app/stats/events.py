@@ -8,9 +8,7 @@ from .models import Strava_Activity, Fitbit_Weight, Fitbit_Calories
 
 
 def background_thread(app):
-    """Example of how to send server generated events to clients."""
     count = 0
-    #app = create_app('TEST')
     with app.app_context():
         while True:
             socketio.sleep(30)

@@ -9,14 +9,31 @@ services:
       - db
     environment:
       STAGE: test
-      SQLALCHEMY_DATABASE_URI: postgresql://test:test@db/test
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://test:test@db/test
     networks:
       - default
     ports:
       - 5000:5000
     volumes:
       - ./app:/usr/src/app/app
-      - ./migrations:/usr/src/app/migrations
+    restart: always
+
+  updater:
+    build:
+      context: .
+      dockerfile: Dockerfile_updater
+    depends_on:
+      - db
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://test:test@db/test
+      FITBIT_CLIENT_ID: 228BZ5
+      FITBIT_CLIENT_SECRET: a95774ed9cbb6b29b6132f77bbeb30a3
+      STRAVA_CLIENT_ID: 43801
+      STRAVA_CLIENT_SECRET: 51cfd621f26e736c47193e9b4cece0d0d216db37
+    volumes:
+      - ./creds:/usr/src/app/creds
+    networks:
+      - default
     restart: always
 
   db:

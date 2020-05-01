@@ -15,9 +15,6 @@ RUN pip install -r requirements_updater.txt
 
 # copy project
 COPY . /usr/src/app/
-RUN chmod +x docker-updater-entrypoint.sh
-
-RUN dos2unix docker-updater-entrypoint.sh
 
 CMD ["tasks.py"]
 ENTRYPOINT ["python"]

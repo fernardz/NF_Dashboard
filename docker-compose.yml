@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  api:
+  webapp:
     build:
       context: .
       dockerfile: Dockerfile_server
@@ -16,7 +16,7 @@ services:
       - 5000:5000
     volumes:
       - ./app:/usr/src/app/app
-      - ./migrations:/usr/src/app/migrations
+      - ./migrations_container:/usr/src/app/migrations
     restart: always
 
   updater:
@@ -27,10 +27,10 @@ services:
       - db
     environment:
       SQLALCHEMY_DATABASE_URI: postgresql://test:test@db/test
-      FITBIT_CLIENT_ID: 228BZ5
-      FITBIT_CLIENT_SECRET: a95774ed9cbb6b29b6132f77bbeb30a3
-      STRAVA_CLIENT_ID: 43801
-      STRAVA_CLIENT_SECRET: 51cfd621f26e736c47193e9b4cece0d0d216db37
+      FITBIT_CLIENT_ID: ###
+      FITBIT_CLIENT_SECRET: ###
+      STRAVA_CLIENT_ID: ###
+      STRAVA_CLIENT_SECRET: ###
     volumes:
       - ./creds:/usr/src/app/creds
     networks:

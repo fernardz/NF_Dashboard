@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, Blueprint, url_for, request, jsonify
+from flask import render_template, Blueprint
 from .models import Strava_Activity, Fitbit_Weight, Fitbit_Calories
 
 
