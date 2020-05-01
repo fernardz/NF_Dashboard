@@ -777,3 +777,5 @@ CMD ["tasks.py"]
 ENTRYPOINT ["python"]
 
 ```
+
+Now if we navigate to localhost:5000/stats/livefeed we will see a calendar view with all our stats. ( I )
