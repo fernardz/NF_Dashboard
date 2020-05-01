@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-SocketIO
+Flask-Migrate
+Bootstrap-Flask
+eventlet
+keyring
+psycopg2-binary
+prefect==0.9.3

@@ -1,0 +1,20 @@
+# pull official base image
+FROM python:3.7-slim-buster
+
+RUN apt-get update && \
+    apt-get install -y gcc && \
+    apt-get install -y dos2unix
+
+# set work directory
+WORKDIR /usr/src/app
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements_updater.txt /usr/src/app/requirements_updater.txt
+RUN pip install -r requirements_updater.txt
+
+# copy project
+COPY . /usr/src/app/
+
+CMD ["tasks.py"]
+ENTRYPOINT ["python"]

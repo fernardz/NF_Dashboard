@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row title_block_center"><h1>Stats</h1></div>
+<div class="row title_block_center"><h4>Strava</h4></div>
+  <table class="table">
+     <thead>
+       <tr>
+         <th>Date</th>
+         <th>Distance</th>
+         <th>Time</th>
+       </tr>
+     </thead>
+     <tbody>
+       {% for act in activities %}
+
+       <tr>
+         <td>{{act.start_date_local}}</td>
+         <td> {{"%.2f"| format(act.distance * 0.000621371)}}</td>
+         <td>{{"%.2f" | format(act.moving_time/60)}}</td>
+       </tr>
+       {% endfor %}
+   </tbody>
+ </table>
+
+ <div class="row title_block_center"><h4>Weight</h4></div>
+   <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for weight in weights %}
+
+        <tr>
+          <td>{{weight.record_date}}</td>
+          <td> {{weight.record_time}}</td>
+          <td>{{weight.weight}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="row title_block_center"><h4>Calories</h4></div>
+    <table class="table">
+       <thead>
+         <tr>
+           <th>Date</th>
+           <th>Calories</th>
+         </tr>
+       </thead>
+       <tbody>
+         {% for cal in calories %}
+
+         <tr>
+           <td>{{cal.record_date}}</td>
+           <td>{{cal.calories}}</td>
+         </tr>
+         {% endfor %}
+     </tbody>
+   </table>
+{% endblock %}

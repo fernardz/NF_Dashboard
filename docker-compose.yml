@@ -1,0 +1,56 @@
+version: '3.6'
+
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile_server
+    depends_on:
+      - db
+    environment:
+      STAGE: test
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://test:test@db/test
+    networks:
+      - default
+    ports:
+      - 5000:5000
+    volumes:
+      - ./app:/usr/src/app/app
+      - ./migrations_container:/usr/src/app/migrations
+    restart: always
+
+  updater:
+    build:
+      context: .
+      dockerfile: Dockerfile_updater
+    depends_on:
+      - db
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://test:test@db/test
+      FITBIT_CLIENT_ID: ###
+      FITBIT_CLIENT_SECRET: ###
+      STRAVA_CLIENT_ID: ###
+      STRAVA_CLIENT_SECRET: ###
+    volumes:
+      - ./creds:/usr/src/app/creds
+    networks:
+      - default
+    restart: always
+
+  db:
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    image: postgres:latest
+    networks:
+      - default
+    ports:
+      - 5405:5432
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
